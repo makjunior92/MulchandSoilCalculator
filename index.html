@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quote form example</title>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./assets/css/bootstrap-datetimepicker.min.css" />
+    <script type="text/javascript" src="./assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="./assets/js/jquery.ui.widget.js"></script>
+    <script src="./assets/js/jquery.iframe-transport.js"></script>
+    <script src="./assets/js/jquery.fileupload.js"></script>
+    <script src="./assets/js/jquery.fileupload-process.js"></script>
+    <script src="./assets/js/jquery.fileupload-validate.js"></script>
+    
+
+    <link rel="stylesheet" href="./assets/css/template.css">
+    <link rel="stylesheet" href="./dynamicinput/style.css" />
+</head>
+<body>
+    <div class="container boxLayout">
+        <div class="text-center">
+            <h2 class="sppb-addon-title">Mulch and Soil Calculator</h2>
+        </div><br>
+        <div>
+            <span class="numberCircle"><span>1</span></span>&nbsp;&nbsp;<span class="title" style="font-style: normal; color: black; font-weight:bold; font-size:20px; margin-top: 10px;">Estimate the Coverage Area</span>
+        </div>
+        <br/>
+        <div class="subdivpadding">
+            <label> 
+                <input checked onclick="hideShow(1)" size="Larger" type="radio" name="radio">
+                Calculate the square footage.   
+            </label>
+        </div>
+        <div class="subdivpadding">
+            <label> 
+                <input onclick="hideShow(2)" size="Larger" type="radio" name="radio">
+                Enter the square footage or acreage.   
+            </label>
+        </div>
+        <br/><br/>
+        <div id="squareFootage" class="subdivpadding">
+            <div class="inp-group"></div>   
+            <div class="row">    
+                <div class="col-sm-6">
+                    <a href="#" style="text-align:left; font-size: medium;" class="add"> &plus; Add an Area</a>
+                </div>
+            </div>
+                        
+        </div>
+        <div id="summaryFootageAcreage" class="subdivpadding">
+            <div class="row">    
+                <div class="col-sm-6">
+                    <label class="col-sm-6">Area</label>
+                    <!-- <input style="height: 60px;" type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" onkeyup="setTotalArea(this.value)" class="form-control" id="calcArea" name="calcArea" placeholder="Enter Number"> -->
+                    <input style="height: 60px;" type="number" onkeyup="customValidationWithAreaSummaryEvent(this.value)" class="form-control" id="calcArea" name="calcArea" placeholder="Enter Number">
+                </div>
+                <div class="col-sm-6">
+                    <label>Unit of Measurements</label>
+                    <select style="height: 60px;" onchange="setUnitOfMeasurements(this.value)" id="measurementDropdown" name="measurementDropdown">
+                        <option value="Sq Ft">Sq Ft</option>
+                        <option value="Acres">Acres</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row title" style="height: 50px; font-size:15px; padding-top: 1%; padding-left: 2%; color: black; background-color:rgb(221, 214, 214);">
+            <div id="totalAreaSummaryDiv" class="subdivpadding title" style="font-weight:bold;">Total Area: <span id="summary"></span> total <span id="measurementsValue"></span></div>
+        </div>
+        <hr/>
+        <div>
+            <span class="numberCircle"><span>2</span></span>&nbsp;&nbsp;<span class="title" style="font-style: normal; color: black; font-weight:bold; font-size:20px; margin-top: 10px;"> Select a Mulch Type or Soil</span>
+        </div>
+        <br/>
+        <div>
+            <div class="row">    
+                <div class="col-sm-6 text-center subdivpadding">
+                    <select style="width: 220px; height: 60px;" id="mymeasurementDropdown" name="mymeasurementDropdown">
+                        <option value="-1">Select a Mulch Type or Soil</option>                         
+                    </select>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div>
+            <span class="numberCircle"><span>3</span></span>&nbsp;&nbsp;<span class="title" style="font-style: normal; color: black; font-weight:bold; font-size:20px; margin-top: 10px;"> Enter the Mulch or Soil Depth (Inch) </span>
+            
+        </div>
+        <br>
+        <div>
+            <div class="row">    
+                <div class="col-sm-6 subdivpadding">
+                    <input style="width: 220px; height: 60px;" type="number" onkeyup="customValidation('depth')" id="depth" name="depth" placeholder="Inches">
+                </div>
+            </div>    
+        </div>
+        <hr>
+        <br>    
+        <div>
+            <div class="row">    
+                <div class="col-sm-9 subdivpadding">
+                    <button style="background-color: rgb(18, 18, 154); color: white; float:right; width: 100%; height: 60px;" onclick="calculate()" type="button" id="submitButton">Calculate</button>
+                </div>
+                <div class="col-sm-3 text-align: right">
+                    <button type="button" style="background-color: white; color: rgb(18, 18, 154); width: 100%; height: 60px;" id="submitButton1">Reset</button>
+                </div>
+            </div>    
+        </div>
+        <br>
+        <div id="calculateSummaryArea">
+            <hr>
+            <br>
+            <div class="row">    
+                <div class="col-sm-6">
+                    <label class="col-sm-6" style="font-weight: bold; font-size: large; color: black;">Volume Results:</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="col-sm-6" style="font-weight: bold; font-size: large; color: black; padding-top: 10px; float: left;">Product Estimate:</label>
+                </div>
+            </div>
+            <div class="row">    
+                <div class="col-sm-2">
+                    <label class="col-sm-2" style="font-weight: normal; padding-top: 15px; font-size: xx-large; color: blue;" id="summaryResultCubic"></label>
+                </div>
+                <div class="col-sm-4">
+                    <select style="height: 60px; float: left;" onchange="getCubicChangeResult(this.value)" id="cubicSummaryDropdown" name="cubicSummaryDropdown">
+                        <option value="cf">Cubic Feet</option>
+                        <option value="cy">Cubic Yards</option>
+                        <option value="cm">Cubic meters</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-3" style="font-weight: normal; padding-top: 15px; font-size: xx-large; color: blue;" id="summaryResultCubicTon"></label>
+                </div>
+                <!-- <div class="col-sm-3">
+                    <select style="height: 50px; float: left;" onchange="setUnitOfMeasurements(this.value)" id="productEsimationDropdown" name="productEsimationDropdown">
+                        <option value="ecu">0.8 cu ft bags</option>
+                        <option value="tcu">2 cu ft bags</option>
+                        <option value="thcu">3 cu ft bags</option>
+                    </select>
+                </div> -->
+            </div>
+        </div>
+        <br><br>
+    </div>
+    <script src="./assets/js/calculate.js"></script>
+    <script src="./dynamicinput/script.js"></script>
+    <script src="./dynamicinput/static-values.js"></script>
+</body>
+</html>
